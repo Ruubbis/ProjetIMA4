@@ -26,7 +26,7 @@ int input_get(void){
 	return value;
 }
 int main(void){
-	DDRB |= 0x20;
+	DDRB |= 0x10;
 	init_serial(9600);
 	PORTB |= 0x10;
 	int value = 0;

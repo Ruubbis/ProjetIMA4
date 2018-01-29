@@ -3,7 +3,7 @@
 #include <util/delay.h>
 
 #define CPU_FREQ 16000000L // Assume a CPU frequency of 16Mhz
-#define DATA_MAX 16
+#define DATA_MAX 3
 
 int in_progress = 0;
 int received = 0;
@@ -43,7 +43,7 @@ int main(){
 	init_serial(9600);
 	DDRB |= 0x20;
 	for(;;){
-		while(received == 0){
+		while(success == 0){
 			c = get_char();
 			if(c == '['){
 				in_progress = 1;
@@ -55,16 +55,14 @@ int main(){
 			else if(c == ']' && in_progress == 1){
 				in_progress = 0;
 				success = 1;
-			}
-			else if(received==17){
-				in_progress = 0;
 				received = 0;
 			}
 		}
 		if(data[0] == 0x42){
-			if(data[2] == 0x31) PORTB = 0x20;
-			if(data[2] == 0x30) PORTB = 0x00;
+			if(data[2] == 0x31){ PORTB ^= 0x20;}
+			if(data[2] == 0x30){ PORTB ^= 0x20;}
 		}
+		success = 0;
 	}
 	return 0;
 }

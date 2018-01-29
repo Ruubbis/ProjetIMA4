@@ -3,7 +3,13 @@
 #include <util/delay.h>
 
 #define CPU_FREQ 16000000L // Assume a CPU frequency of 16Mhz
-#define DATA_MAX 8
+#define DATA_MAX 5
+
+unsigned char msg_A_ON[DATA_MAX]= {0x5B,0x41,0x2D,0x31,0x5D};
+unsigned char msg_B_ON[DATA_MAX]= {0x5B,0x42,0x2D,0x31,0x5D};
+unsigned char msg_A_OFF[DATA_MAX]= {0x5B,0x41,0x2D,0x30,0x5D};
+unsigned char msg_B_OFF[DATA_MAX]= {0x5B,0x42,0x2D,0x30,0x5D};
+
 void init_serial(int speed){
 	cli();
 	UBRR0 = CPU_FREQ/(((unsigned long int)speed)<<4)-1;
@@ -26,12 +32,35 @@ void send_string(unsigned char s[DATA_MAX]){
 	}
 }
 
+int input_get(void){
+	int value;
+	value = (((PINB&0x01)!=0)?1:0) + (((PINB&0x02)!=0)?2:0) + (((PINB&0x04)!=0)?4:0);
+	return value;
+}
+
+
 int main(){
+	DDRB |= 0x10;
+	PORTB = 0x10;
 	init_serial(9600);
+	int value;
 	for(;;){
-		unsigned char str[DATA_MAX] = {0x5B,0x41,0x2D,0x31,0x5D,0,0,0};
-		send_string(str);
-		_delay_ms(1000);
+		value = input_get();
+		switch(value){
+			case 1:
+				send_string(msg_A_ON);
+				break;
+			case 2:
+				send_string(msg_B_OFF);
+				break;
+			case 4:
+				send_string(msg_A_OFF);
+				send_string(msg_B_OFF);
+				break;
+			default:
+				break;
+		}
+		_delay_ms(100);
 	}
 	return 0;
 }
