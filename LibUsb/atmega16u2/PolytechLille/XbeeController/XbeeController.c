@@ -26,9 +26,10 @@ void Send_Msg_Serial(uint8_t msg[DATA_MAX]){
 
 void SetupHardware(void)
 {
-	
-	UCSR1B |= (1 << RXCIE1); // Enable the USART Receive Complete interrupt (USART_RXC)
 	Serial_Init(9600,false);
+	UCSR1B |= (1 << RXCIE1);
+       	// Enable the USART Receive Complete interrupt (USART_RXC)
+	DDRD |= 0x30;
 	USB_Init();
 }
 
@@ -56,15 +57,11 @@ void ReceiveNextReport(void)
 		if (Endpoint_IsReadWriteAllowed()){
 			uint8_t LEDReport = Endpoint_Read_8();
 			if(LEDReport == 0x41){
+				PORTD |= 0x30;
 				Send_Msg_Serial(msg_A_ON);
 			}
-			else if(LEDReport == 0x42){
-				Send_Msg_Serial(msg_A_OFF);
-			}
-			else if(LEDReport == 0x43){
-				Send_Msg_Serial(msg_B_ON);
-			}
-			else if(LEDReport == 0x44){
+			if(LEDReport == 0x42){
+				PORTD = 0x00;
 				Send_Msg_Serial(msg_B_OFF);
 			}
 		}
@@ -72,6 +69,7 @@ void ReceiveNextReport(void)
 	}
 }
 
+	
 void PAD_Task(void)
 {
 	
