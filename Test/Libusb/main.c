@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "settings.h"
+#include "socketServ.h"
 
 #define MAX_DATA 8
 #define ID_VENDOR 0x0504
@@ -173,7 +175,7 @@ int write_endpoint(libusb_device_handle * handle, int endpoint_out, int led_stat
 	unsigned char data;
 	int transferred;
 	int timeout = 1000;
-	data = (led_state == 1)?0x41:0x42;
+	data = 0x40+led_state;
 	int status = libusb_interrupt_transfer(handle, endpoint_out, &data, 1, &transferred, timeout);
 	if(status!=0){printf("status = %d\n",status); perror("libusb_interrupt_transfer"); return -1; }
 	return 0;
@@ -200,6 +202,49 @@ int release_kernel(libusb_device_handle * handle, int * interfaces_list, int nb_
 	return 0;
 }
 
+int controlClient(int sockfd, libusb_device_handle * handle, int endpoint_in, int endpoint_out){
+	
+	#ifdef DEBUG
+		printf("DEBUT CONTROL CLIENT\n");
+	#endif
+	
+	FILE * dialogue = fdopen(sockfd, "a+");
+	if(dialogue == NULL) {perror("controlClient fdopen"); return(EXIT_FAILURE);}
+
+	char ordre[MAX_MSG];
+	while(fgets(ordre,MAX_MSG,dialogue) != NULL){
+		printf("Data reçu : %s\n",ordre);
+		switch(ordre[0]){
+			case 'A':
+				switch(ordre[2]){
+					case '0':
+						write_endpoint(handle,endpoint_out,2);
+						break;
+					case '1':
+						write_endpoint(handle,endpoint_out,1);
+						break;
+				}
+				break;
+			case 'B':
+				switch(ordre[2]){
+					case '0':
+						write_endpoint(handle,endpoint_out,4);
+						break;
+					case '1':
+						write_endpoint(handle,endpoint_out,3);
+						break;
+				}
+				break;
+		}
+	}
+
+	#ifdef DEBUG
+		printf("CONTROL CLIENT FIN DE SOCKET\n");
+	#endif
+	fclose(dialogue);
+	return 0;
+}
+
 
 int main(){
 	int i;
@@ -209,7 +254,8 @@ int main(){
 	int * interfaces = NULL;
 	int nb_interfaces;
 	libusb_device_handle * handle;
-	
+	int sockfd;
+
 	//------------------------------
 	//INITIALISATION BIBLIOTHEQUE
 	
@@ -271,21 +317,12 @@ int main(){
 	#endif
 	claim_all_interfaces(handle, configValue, interfaces, nb_interfaces);
 
-
-	printf("Endpoint In : %d -- Endpoint Out : %d\n",endpoint_in,endpoint_out);
-	for(;;)
-		{
-		write_endpoint(handle, endpoint_out, 1);
-		sleep(1);
-		}
-
 	#ifdef DEBUG
-		printf("Test LED...\n");
-				
+		printf("Initialisation Serveur Socket\n");
 	#endif
 
-
-		
+	sockfd = initialisationServeur();
+	gestionServeur(sockfd,controlClient,handle,endpoint_in,endpoint_out);		
 
 	//LIBERATION DES INTERFACE ET CLOTURE DU CONTEXTE USB
 	#ifdef DEBUG

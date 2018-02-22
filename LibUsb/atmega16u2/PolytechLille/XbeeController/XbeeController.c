@@ -56,16 +56,23 @@ void ReceiveNextReport(void)
 	if (Endpoint_IsOUTReceived()){
 		if (Endpoint_IsReadWriteAllowed()){
 			uint8_t LEDReport = Endpoint_Read_8();
-			if(LEDReport == 0x41){
-				PORTD |= 0x30;
-				Send_Msg_Serial(msg_A_ON);
+			switch(LEDReport){
+				case 0x41:
+					Send_Msg_Serial(msg_A_ON);
+					break;
+				case 0x42:
+					Send_Msg_Serial(msg_A_OFF);
+					break;
+				case 0x43:
+					Send_Msg_Serial(msg_B_ON);
+					break;
+				case 0x44:
+					Send_Msg_Serial(msg_B_OFF);
+					break;
 			}
-			if(LEDReport == 0x42){
-				PORTD = 0x00;
-				Send_Msg_Serial(msg_B_OFF);
-			}
+			Endpoint_ClearOUT();
+	
 		}
-		Endpoint_ClearOUT();
 	}
 }
 
