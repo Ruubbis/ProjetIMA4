@@ -245,7 +245,7 @@ int controlClient(int sockfd, libusb_device_handle * handle, int endpoint_in, in
 	return 0;
 }
 
-
+/*
 int main(){
 	int i;
 	int configValue;
@@ -332,4 +332,4 @@ int main(){
 	release_all_interfaces(handle, interfaces, nb_interfaces);
 	libusb_close(handle);
 	libusb_exit(context);
-}
+}*/

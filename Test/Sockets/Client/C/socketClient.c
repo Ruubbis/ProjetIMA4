@@ -1,22 +1,31 @@
 #include "settings.h"
 #include "socketClient.h"
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 int connexionServeur(){
-	struct sockaddr_un addr;
+//	struct sockaddr_un addr;
+	struct sockaddr_in addr;
 	int sockfd;
 	int statut;
 	//SOCKET CREATION
 	
 	#ifdef DEBUG
-		printf("Creation Socket\n");
+	printf("Creation Socket\n");
 	#endif
-	sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+//	sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+	sockfd = socket(PF_INET, SOCK_STREAM, 0);
 	if (sockfd == -1){perror("Error : Creating a socket"); return EXIT_FAILURE;}
 
-
+/*
 	memset(&addr, 0, sizeof(struct sockaddr_un));
 	addr.sun_family = AF_UNIX;
 	strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) -1);
+*/
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(9000);
+	inet_aton("127.0.0.1",(struct sockaddr *) &addr.sin_addr.s_addr);
+
 
 	#ifdef DEBUG
 		printf("Connecting Socket\n");
