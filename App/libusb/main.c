@@ -213,7 +213,9 @@ int controlClient(int sockfd, libusb_device_handle * handle, int endpoint_in, in
 
 	char ordre[MAX_MSG];
 	while(fgets(ordre,MAX_MSG,dialogue) != NULL){
+		#ifdef DEBUG
 		printf("Data reçu : %s\n",ordre);
+		#endif
 		switch(ordre[0]){
 			case 'A':
 				switch(ordre[2]){

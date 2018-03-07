@@ -59,8 +59,8 @@ int main(){
 			}
 		}
 		if (data[0] == 0x41){
-			if(data[2] == 0x31){PORTB ^= 0x20;}
-			if(data[2] == 0x30){PORTB ^= 0x20;}
+			if(data[2] == 0x31){PORTB |= 0x20;}
+			if(data[2] == 0x30){PORTB = 0x0;}
 		}
 		success = 0;
 	}
