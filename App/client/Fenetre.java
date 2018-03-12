@@ -58,10 +58,11 @@ public class Fenetre extends JFrame{
 			out = new PrintWriter(socket.getOutputStream());		
 		}		
 		catch (UnknownHostException e){
-			e.printStackTrace();
+			System.out.println("Impossible de trouver le server");
 		}
 		catch (IOException e){
-			e.printStackTrace();
+			System.out.println("Impossible de trouver le serveur");
+			System.exit(0);
 		}
 	}
 

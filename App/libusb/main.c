@@ -210,7 +210,7 @@ int controlClient(int sockfd, libusb_device_handle * handle, int endpoint_in, in
 	
 	FILE * dialogue = fdopen(sockfd, "a+");
 	if(dialogue == NULL) {perror("controlClient fdopen"); return(EXIT_FAILURE);}
-
+	printf("endpoints [%d,%d]",endpoint_in,endpoint_out);
 	char ordre[MAX_MSG];
 	while(fgets(ordre,MAX_MSG,dialogue) != NULL){
 		#ifdef DEBUG

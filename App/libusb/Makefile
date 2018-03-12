@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall -pedantic
+CFLAGS = -Wextra -Wall -pedantic
 LDFLAGS = -lusb-1.0 
 EXEC = socketsServer
 SRC = $(wildcard *.c) #définit la liste des .o du dossier
