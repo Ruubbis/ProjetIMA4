@@ -28,8 +28,8 @@ void fermetureMoteur(int id){
 
 
 void setup(){
-    //Dynamixel.begin(1000000,2);
-    Serial.begin(4800);
+    Dynamixel.begin(1000000,2);
+    Serial1.begin(4800);
     delay(1000);
     //Dynamixel.setEndless(ID_1,OFF);
     //Dynamixel.setEndless(ID_2,OFF);
@@ -51,12 +51,12 @@ void eteindreLumiere(){
 }
 
 void loop(){
-    /*while(success == 0){
-        digitalWrite(LED,HIGH);
-        if(Serial.available() > 0){ 
-            digitalWrite(LED,LOW);
+    while(success == 0){
+        if(Serial1.available() > 0){
+            c = (char)Serial1.read();
             if(c == '['){
                progress = 1;
+               digitalWrite(LED,HIGH);
             }
             else if(c != ']' && progress == 1){
                data[received] = c;
@@ -66,25 +66,20 @@ void loop(){
                progress = 0;
                success = 1;
                received = 0;
+               digitalWrite(LED,LOW);
             }
-        
+
+            delay(100);
+        }
     }
-    
-        digitalWrite(LED,LOW);
-    delay(500); 
     if (data[0] == 0x41){
-        if(data[2] == 0x31){ digitalWrite(LED, HIGH); }
-        if(data[2] == 0x30){ digitalWrite(LED, LOW); }
-        delay(2000);
+        if(data[2] == 0x31){ allumageLumiere(); }
+        if(data[2] == 0x30){ eteindreLumiere(); }
+        delay(100);
   
     }
-    success = 0;*/
-    if(Serial.available() > 0){
-       digitalWrite(LED,HIGH);
-       int c = Serial.read();
-      delay(100); 
-    }
-    digitalWrite(LED,LOW);
+    success = 0;
+    delay(100);
 }
 
 

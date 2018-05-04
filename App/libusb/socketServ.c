@@ -4,7 +4,6 @@
 #include <netinet/in.h>
 
 int initialisationServeur(){
-	//struct sockaddr_un addr;
 	struct sockaddr_in addr;
 	int sockfd;
 	int statut;
@@ -13,21 +12,10 @@ int initialisationServeur(){
 	#ifdef DEBUG
 		printf("Creation Socket\n");
 	#endif
-/*
- 	sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
-	if (sockfd == -1){perror("Error : Creating a socket"); return EXIT_FAILURE;}
-	if (remove(SOCK_PATH) == -1 && errno != ENOENT){perror("Error : deleting old socket file"); return EXIT_FAILURE;}
-*/
 
  	sockfd = socket(PF_INET, SOCK_STREAM, 0);
 	if (sockfd == -1){perror("Error : Creating a socket"); return EXIT_FAILURE;}
 
-/*
-	memset(&addr, 0, sizeof(struct sockaddr_un));
-	addr.sun_family = AF_UNIX;
-	strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) -1);
-*/
-	
 	memset(&addr, 0, sizeof(struct sockaddr_in));
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr=INADDR_ANY;
@@ -44,9 +32,9 @@ int initialisationServeur(){
 		printf("Binding Socket\n");
 	#endif
 	//SOCKET BIND
-	//statut = bind(sockfd, (struct sockaddr *) &addr, sizeof(struct sockaddr_un));
 	statut = bind(sockfd, (struct sockaddr *) &addr, sizeof(struct sockaddr_in));
 	if(statut < 0){perror("Error : binding socket"); return EXIT_FAILURE;}
+	
 	//SOCKET LISTEN
 	#ifdef DEBUG
 		printf("Listen Socket\n");

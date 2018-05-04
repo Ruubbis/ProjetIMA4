@@ -316,6 +316,7 @@ int main(){
 	#ifdef DEBUG
 		printf("Reclamation des interfaces...\n");
 	#endif
+
 	claim_all_interfaces(handle, configValue, interfaces, nb_interfaces);
 
 	#ifdef DEBUG
