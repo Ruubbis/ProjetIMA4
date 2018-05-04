@@ -14,8 +14,8 @@
 MCU          = atmega16u2
 ARCH         = AVR8
 BOARD        = UNO
-F_CPU        = 16000000
-F_USB        = $(F_CPU)
+F_CPU        = 1000000
+F_USB        = 8000000
 OPTIMIZATION = s
 TARGET       = XbeeController
 SRC          = $(TARGET).c Descriptors.c $(LUFA_SRC_USB) $(LUFA_SRC_USBCLASS)

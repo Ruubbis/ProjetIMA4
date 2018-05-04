@@ -40,7 +40,7 @@ unsigned char get_char(void){
 int main(){
 	unsigned char c;
 	unsigned char data[DATA_MAX];
-	init_serial(9600);
+	init_serial(4800);
 	DDRB |= 0x20;
 	for(;;){
 		while(success == 0){

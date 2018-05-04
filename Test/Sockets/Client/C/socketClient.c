@@ -23,8 +23,8 @@ int connexionServeur(){
 	strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) -1);
 */
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(9000);
-	inet_aton("127.0.0.1",(struct sockaddr *) &addr.sin_addr.s_addr);
+	addr.sin_port = htons(4000);
+	inet_aton("127.0.0.1",(struct in_addr *) &addr.sin_addr.s_addr);
 
 
 	#ifdef DEBUG
@@ -54,7 +54,10 @@ int main(void){
 		int taille = read(0,msg,8);
 		if(taille <= 0) break;
 		write(statut,msg,taille);
+		
 	}
+
+	shutdown(statut,SHUT_RDWR);
 	return 0;
 }
 

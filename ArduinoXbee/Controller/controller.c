@@ -43,24 +43,9 @@ int main(){
 	DDRB |= 0x10;
 	PORTB = 0x10;
 	init_serial(9600);
-	int value;
 	for(;;){
-		value = input_get();
-		switch(value){
-			case 1:
-				send_string(msg_A_ON);
-				break;
-			case 2:
-				send_string(msg_B_OFF);
-				break;
-			case 4:
-				send_string(msg_A_OFF);
-				send_string(msg_B_OFF);
-				break;
-			default:
-				break;
-		}
-		_delay_ms(100);
+		send_string(msg_A_ON);
+		_delay_ms(1000);
 	}
 	return 0;
 }

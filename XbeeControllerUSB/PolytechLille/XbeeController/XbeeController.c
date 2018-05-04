@@ -26,7 +26,7 @@ void Send_Msg_Serial(uint8_t msg[DATA_MAX]){
 
 void SetupHardware(void)
 {
-	Serial_Init(9600,false);
+	Serial_Init(4800,false);
 	UCSR1B |= (1 << RXCIE1);
        	// Enable the USART Receive Complete interrupt (USART_RXC)
 	DDRD |= 0x30;
@@ -70,6 +70,7 @@ void ReceiveNextReport(void)
 					Send_Msg_Serial(msg_B_OFF);
 					break;
 			}
+			PORTD ^= 0x10;
 			Endpoint_ClearOUT();
 	
 		}
@@ -82,7 +83,6 @@ void PAD_Task(void)
 	
 	if (USB_DeviceState != DEVICE_STATE_Configured)
 	  return;
-	
 	SendNextReport();
 	ReceiveNextReport();
 }
@@ -98,7 +98,6 @@ int main(void)
 {
 	SetupHardware();
 	GlobalInterruptEnable();
-
 	for (;;){
 		USB_USBTask();
 		PAD_Task();
