@@ -16,7 +16,7 @@ $(SUBDIRS):
 debug:
 	$(MAKE) -C Libusb debug
 	$(MAKE) -C Communication debug
-	$(CC) $(SRC) -o $(EXEC) $(LOCAL_LIBS) $(CFLAGS) $(LIBS) -DDEBUG
+	$(CC) $(SRC) $(CFLAGS) -o $(EXEC) $(LOCAL_LIBS) $(CFLAGS) $(LIBS) -DDEBUG
 
 clean: 
 	rm -f *.o $(EXEC)
@@ -26,4 +26,4 @@ clean:
 $(EXEC):
 	$(MAKE) -C Libusb
 	$(MAKE) -C Communication
-	$(CC) $(SRC) -o $(EXEC) $(LOCAL_LIBS) $(CFLAGS) $(LIBS)
+	$(CC) $(SRC) $(CFLAGS) -o $(EXEC) $(LOCAL_LIBS) $(CFLAGS) $(LIBS)

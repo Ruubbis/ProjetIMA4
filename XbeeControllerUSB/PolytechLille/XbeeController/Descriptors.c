@@ -121,7 +121,7 @@ const USB_Descriptor_String_t PROGMEM XbeeController_ManufacturerString = USB_ST
  *  and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
  *  Descriptor.
  */
-const USB_Descriptor_String_t PROGMEM XbeeController_ProductString = USB_STRING_DESCRIPTOR(L"RelayBoard");
+const USB_Descriptor_String_t PROGMEM XbeeController_ProductString = USB_STRING_DESCRIPTOR(L"XbeeController");
 
 /** Serial number string. This is a Unicode string containing the device's unique serial number, expressed as a
  *  series of uppercase hexadecimal digits.

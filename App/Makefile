@@ -11,7 +11,7 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 clean: 
-	$(MAKE) cleanall -C libusb
-	$(MAKE) cleanall -C client
+	$(MAKE) clean -C libusb
+	$(MAKE) clean -C client
 
 .PHONY: $(SUBDIRS)

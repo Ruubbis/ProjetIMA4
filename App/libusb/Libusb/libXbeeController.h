@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define MAX_DATA 5
+#define MAX_DATA 64
 #define ID_VENDOR 0x0504
 #define ID_PRODUCT 0x2201
 
@@ -19,7 +19,7 @@ int release_interface(int interfaceNumber);
 int claim_all_interfaces();
 int release_all_interfaces();
 int read_endpoint();
-int write_endpoint(int led_state);
+int write_endpoint(unsigned char *,int);
 int release_kernel();
 int init_xbee_controller(void);
 int close_xbee_controller(void);

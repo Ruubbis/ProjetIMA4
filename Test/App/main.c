@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
 
 //#include "settings.h"
 #include "Communication/libSocketServ.h"
@@ -24,6 +23,9 @@ int controlClient(int sockfd){
 	unsigned char * data;
 	int bytes;
 	while((bytes=read(sockfd,ordre,MAX_MSG))>0){
+		#ifdef DEBUG
+			printf("Data received : %s\n",ordre);
+		#endif
 		bytes--;
 		data = malloc(bytes*sizeof(unsigned char));
 		string_copy(ordre,data,bytes);

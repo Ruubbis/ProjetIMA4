@@ -6,7 +6,7 @@ export CFLAGS =  -Wall -I. -DF_CPU=16000000 -Os #-g
 export LDFLAGS = -g $(TARGET_ARCH) -lm -Wl,--gc-sections #	-Os
 
 TARGET = usb
-TERM = /dev/ttyUSB1
+TERM = /dev/ttyACM3
 CPPFLAGS = -mmcu=$(MCU)
 PGMERISP = -c stk500v1 -b 115200 -P $(TERM)
 ARVDUDECONF= -C /usr/local/arduino/arduino-0022/hardware/tools/avrdude.conf

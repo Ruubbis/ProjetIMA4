@@ -17,9 +17,9 @@ ISR(USART1_RX_vect)
 	state_send = 1;
 }
 
-void Send_Msg_Serial(uint8_t msg[DATA_MAX]){
+void Send_Msg_Serial(uint8_t * msg, int size){
 	int i;
-	for(i=0;i<DATA_MAX;i++){
+	for(i=0;i<size;i++){
 		Serial_SendByte(msg[i]);	
 	}
 }
@@ -55,8 +55,14 @@ void ReceiveNextReport(void)
 	Endpoint_SelectEndpoint(XC_OUT_EPADDR);
 	if (Endpoint_IsOUTReceived()){
 		if (Endpoint_IsReadWriteAllowed()){
-			uint8_t LEDReport = Endpoint_Read_8();
-			switch(LEDReport){
+			uint8_t buffer[64];
+			uint8_t error;
+			uint16_t bytes = 0;
+			
+			while((error = Endpoint_Read_Stream_LE(buffer, sizeof(buffer), &bytes)) == ENDPOINT_RWSTREAM_IncompleteTransfer);
+		
+			Send_Msg_Serial(buffer,bytes);	
+		/*	switch(LEDReport){
 				case 0x41:
 					Send_Msg_Serial(msg_A_ON);
 					break;
@@ -69,7 +75,7 @@ void ReceiveNextReport(void)
 				case 0x44:
 					Send_Msg_Serial(msg_B_OFF);
 					break;
-			}
+			}*/
 			PORTD ^= 0x10;
 			Endpoint_ClearOUT();
 	

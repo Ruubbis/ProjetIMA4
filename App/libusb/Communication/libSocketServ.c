@@ -1,5 +1,7 @@
-#include "settings.h"
-#include "socketServ.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "libSocketServ.h"
 #include <libusb-1.0/libusb.h>
 #include <netinet/in.h>
 
@@ -44,7 +46,7 @@ int initialisationServeur(){
 	return sockfd;
 }
 
-int gestionServeur(int sockfd, int (*traitement)(int, libusb_device_handle *, int, int), libusb_device_handle * handle, int endpoint_in, int endpoint_out){
+int gestionServeur(int sockfd, int (*traitement)(int)){
 	int dialogue;
 	#ifdef DEBUG
 		printf("Attente connexion Socket\n");
@@ -53,7 +55,7 @@ int gestionServeur(int sockfd, int (*traitement)(int, libusb_device_handle *, in
 	#ifdef DEBUG
 		printf("Connexion Socket Recue !\n");
 	#endif
-	if(traitement(dialogue,handle,endpoint_in,endpoint_out) <0){	
+	if(traitement(dialogue) <0){	
 		shutdown(sockfd, SHUT_RDWR);}
 	return 0;
 }

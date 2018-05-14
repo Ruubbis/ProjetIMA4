@@ -8,5 +8,5 @@ all: $(CLASS)
 	$(CC) $<
 
 
-cleanall:
+clean:
 	rm -rf *.class
