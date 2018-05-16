@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wextra -Wall -pedantic
+CFLAGS = -Wextra -Wall 
 LDFLAGS =  
 OUT = libSocketServ.a
 SRC = libSocketServ.c

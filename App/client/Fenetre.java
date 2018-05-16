@@ -31,6 +31,7 @@ public class Fenetre extends JFrame{
 	private JButton buttonAllumer = new JButton("Allumer la lumiere");
 	private JButton buttonEteindre = new JButton("Eteindre la lumiere");
 	private JButton buttonEnvoieMsg = new JButton("Envoyer le message");
+	private JButton buttonClear = new JButton("Nettoyer l'ecran");
 	private JPanel panel = new JPanel();
 	private JLabel title = new JLabel("Controleur Xbee USB");
 	private JTextField jtf = new JTextField("Entrez votre message");
@@ -67,13 +68,15 @@ public class Fenetre extends JFrame{
 		buttonAllumer.addActionListener(new A1Listener());
 		buttonEteindre.addActionListener(new A0Listener());
 		buttonEnvoieMsg.addActionListener(new B1Listener());
-				
+		buttonClear.addActionListener(new B0Listener());		
+		
 		panel.setLayout(null);
 		panel.add(buttonAllumer);
 		panel.add(buttonEteindre);
 		panel.add(buttonEnvoieMsg);
 		panel.add(title);
 		panel.add(jtf);
+		panel.add(buttonClear);
 
 		matrix.setLayout(new GridLayout(64,32));
 
@@ -81,8 +84,9 @@ public class Fenetre extends JFrame{
 		title.setBounds(insets.left + 500, insets.top + 5, 600, 80);
 		buttonAllumer.setBounds(insets.left + 60, insets.top + 70, size.width, size.height);
 		buttonEteindre.setBounds(insets.left + (windowSize.width - size.width - 60), insets.top + 70, size.width, size.height);
-		buttonEnvoieMsg.setBounds(insets.left + (windowSize.width - size.width - 60), insets.top + 180, size.width-80, size.height);
-		jtf.setBounds(insets.left + 60, insets.top + 180, size.width+80, size.height);
+		buttonEnvoieMsg.setBounds(insets.left + 60 + size.width + 70, insets.top + 180, size.width-140, size.height);
+		jtf.setBounds(insets.left + 60, insets.top + 180, size.width+50, size.height);
+		buttonClear.setBounds(insets.left + size.width * 2, insets.top + 180, size.width-140, size.height);
 
 		jrNoir.setSelected(true);
 		jrBlanc.setFont(police);
@@ -157,10 +161,23 @@ public class Fenetre extends JFrame{
 		}
 	}
 
+	class B0Listener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			String msg = jtf.getText();
+			out.println("[C-X]");
+			out.flush();
+			for(int j=0;j<32;j++){
+				for(int i=0;i<64;i++){
+					bmatrix[i][j].setBackground(Color.WHITE);
+				}
+			}
+		}
+	}
+
 	class B1Listener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			String msg = jtf.getText();
-			out.println("[B-"+msg+"]");
+			out.println("[C-T-0 "+msg+"]");
 			out.flush();
 		}
 	}
@@ -172,27 +189,27 @@ public class Fenetre extends JFrame{
 				MatrixButton button = (MatrixButton) src;
 				if(jrBlanc.isSelected()){
 					button.setBackground(Color.WHITE);
-					out.println("[C-"+button.posx+" "+button.posy+" 0]");
+					out.println("[C-"+button.posx+"-"+button.posy+"-0]");
 					out.flush();
 				}
 				else if(jrRouge.isSelected()){
 					button.setBackground(Color.RED);
-					out.println("[C-"+button.posx+" "+button.posy+" 1]");
+					out.println("[C-"+button.posx+"-"+button.posy+"-1]");
 					out.flush();
 				}
 				else if(jrBleu.isSelected()){
 					button.setBackground(Color.BLUE);
-					out.println("[C-"+button.posx+" "+button.posy+" 2]");
+					out.println("[C-"+button.posx+"-"+button.posy+"-2]");
 					out.flush();
 				}
 				else if(jrJaune.isSelected()){
 					button.setBackground(Color.YELLOW);
-					out.println("[C-"+button.posx+" "+button.posy+" 3]");
+					out.println("[C-"+button.posx+"-"+button.posy+"-3]");
 					out.flush();
 				}
 				else{
 					button.setBackground(Color.BLACK);
-					out.println("[C-"+button.posx+" "+button.posy+" 4]");
+					out.println("[C-"+button.posx+"-"+button.posy+"-4]");
 					out.flush();
 				}
 			}

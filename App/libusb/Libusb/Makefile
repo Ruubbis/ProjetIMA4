@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wextra -Wall -pedantic
+CFLAGS = -Wextra -Wall 
 LDFLAGS = -lusb-1.0 
 OUT = libXbeeController.a
 SRC = libXbeeController.c

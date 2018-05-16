@@ -46,4 +46,5 @@ int main(){
 	gestionServeur(sockfd,controlClient);	
 
 	close_xbee_controller();
+	return 0;
 }

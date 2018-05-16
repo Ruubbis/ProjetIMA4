@@ -1,6 +1,6 @@
 CC = gcc
 SRC = main.c
-CFLAGS = -Wextra -Wall -pedantic
+CFLAGS = -Wextra -Wall
 SUBDIRS = Libusb Communication
 LOCAL_LIBS  = -L Communication/  -L Libusb/
 LOCAL_LIBS += -lSocketServ  -lXbeeController
